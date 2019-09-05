@@ -1,0 +1,3 @@
+[submodule "src/3rdparty/BTProgressHUD"]
+	path = src/3rdparty/BTProgressHUD
+	url = https://github.com/diegostamigni/BTProgressHUD.git

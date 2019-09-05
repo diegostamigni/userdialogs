@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Linq;
 using System.Text;
 using UIKit;
@@ -48,6 +48,7 @@ namespace Acr.UserDialogs
 
         public override IDisposable DatePrompt(DatePromptConfig config)
         {
+#if __IOS__
             var picker = new AI.AIDatePickerController
             {
                 Mode = UIDatePickerMode.Date,
@@ -64,11 +65,15 @@ namespace Acr.UserDialogs
                 picker.MinimumDateTime = config.MinimumDate;
 
             return this.Present(picker);
+#else
+            return null;
+#endif
         }
 
 
         public override IDisposable TimePrompt(TimePromptConfig config)
         {
+#if __IOS__
             var picker = new AI.AIDatePickerController
             {
                 Mode = UIDatePickerMode.Time,
@@ -81,6 +86,9 @@ namespace Acr.UserDialogs
                 Use24HourClock = config.Use24HourClock
             };
             return this.Present(picker);
+#else
+            return null;
+#endif
         }
 
 
@@ -217,7 +225,7 @@ namespace Acr.UserDialogs
         }
 
 
-        #region Internals
+#region Internals
 
         protected virtual UIAlertController CreateNativeActionSheet(ActionSheetConfig config)
         {
@@ -269,10 +277,11 @@ namespace Acr.UserDialogs
                     var x = top.View.Bounds.Width / 2;
                     var y = top.View.Bounds.Bottom;
                     var rect = new CGRect(x, y, 0, 0);
-
+#if __IOS__
                     alert.PopoverPresentationController.SourceView = top.View;
                     alert.PopoverPresentationController.SourceRect = rect;
                     alert.PopoverPresentationController.PermittedArrowDirections = UIPopoverArrowDirection.Unknown;
+#endif
                 }
                 top.PresentViewController(alert, true, null);
             });
@@ -328,6 +337,6 @@ namespace Acr.UserDialogs
             }
         }
 
-        #endregion
+#endregion
     }
 }
