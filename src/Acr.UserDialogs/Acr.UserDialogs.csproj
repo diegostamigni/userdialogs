@@ -70,10 +70,10 @@
 
     <ItemGroup Condition=" $(TargetFramework.StartsWith('xamarin.tvos')) ">
         <Compile Include="Platforms\Shared\**\*.cs" />
-        <Compile Include="Platforms\ios\**\*.cs" Exclude="Platforms\ios\**\AIDatePickerController.cs"/>
+        <Compile Include="Platforms\ios\**\*.cs" Exclude="Platforms\ios\**\AIDatePickerController.cs" />
         <Reference Include="OpenTK-1.0" />
         <Reference Include="System.Drawing.Common" />
-        <ProjectReference Include="..\3rdparty\BTProgressHUD\BTProgressHUD\BTProgressHUD-TvOS.csproj" />
+        <ProjectReference Include="..\3rdparty\BTProgressHUD\BTProgressHUD\BTProgressHUD.csproj" />
     </ItemGroup>
 
     <ItemGroup Condition=" $(TargetFramework.StartsWith('uap')) ">
