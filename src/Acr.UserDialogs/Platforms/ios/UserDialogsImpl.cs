@@ -197,6 +197,9 @@ namespace Acr.UserDialogs
                     snackbar.MessageLabel.TextColor = cfg.MessageTextColor.Value.ToNative();
                     //snackbar.MessageTextColor = cfg.MessageTextColor.Value.ToNative();
 
+                if (cfg.MessageFontSize.HasValue)
+                    snackbar.MessageLabel.Font = UIFont.BoldSystemFontOfSize(cfg.MessageFontSize.Value);
+
                 //if (cfg.Position != null)
                 //    snackbar.LocationType = cfg.Position == ToastPosition.Top
                 //        ? TTGSnackbarLocation.Top

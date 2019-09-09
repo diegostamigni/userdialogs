@@ -35,7 +35,7 @@ namespace Acr.UserDialogs
         public TimeSpan Duration { get; set; } = DefaultDuration;
         public ToastAction Action { get; set; }
         public string Icon { get; set; }
-
+        public nfloat? MessageFontSize { get; set; }
 
         public ToastConfig(string message)
         {
@@ -88,6 +88,13 @@ namespace Acr.UserDialogs
         public ToastConfig SetMessageTextColor(Color color)
         {
             this.MessageTextColor = color;
+            return this;
+        }
+
+
+        public ToastConfig SetMessageFontSize(nfloat fontSize)
+        {
+            this.MessageFontSize = fontSize;
             return this;
         }
 
