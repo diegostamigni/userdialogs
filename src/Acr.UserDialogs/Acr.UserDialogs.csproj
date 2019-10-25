@@ -1,8 +1,8 @@
 ﻿<Project Sdk="MSBuild.Sdk.Extras/2.0.41">
 
     <PropertyGroup>
-        <TargetFrameworks>netstandard2.0;monoandroid81;monoandroid90;xamarin.ios10;xamarin.tvos10</TargetFrameworks>
-        <TargetFrameworks Condition=" '$(OS)' == 'Windows_NT' ">uap10.0.16299;$(TargetFrameworks)</TargetFrameworks>
+        <TargetFrameworks>netstandard2.1;monoandroid81;monoandroid90;xamarin.ios10;xamarin.tvos10</TargetFrameworks>
+      <TargetFrameworks Condition=" '$(OS)' == 'Windows_NT' ">$(TargetFrameworks);uap10.0.16299;</TargetFrameworks>
         <PackageProjectUrl>https://github.com/aritchie/userdialogs</PackageProjectUrl>
         <Product>$(AssemblyName) ($(TargetFramework))</Product>
         <Authors>Allan Ritchie</Authors>
