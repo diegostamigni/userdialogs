@@ -11,9 +11,11 @@ namespace AI
         private UIEdgeInsets safeAreaInsets;
 
         public double AnimatedTransitionDuration { get; set; } = 0.4;
+#if __IOS__
 		public UIDatePickerMode Mode { get; set; } = UIDatePickerMode.Date;
-	    public UIColor BackgroundColor { get; set; } = UIColor.White;
-	    public DateTime SelectedDateTime { get; set; } = DateTime.Now;
+#endif
+        public UIColor BackgroundColor { get; set; }
+        public DateTime SelectedDateTime { get; set; } = DateTime.Now;
         public DateTime? MaximumDateTime { get; set; }
         public DateTime? MinimumDateTime { get; set; }
 	    public int MinuteInterval { get; set; } = 1;
@@ -29,13 +31,21 @@ namespace AI
 	    UIView dimmedView;
 
 
-        public AIDatePickerController() 
+        public AIDatePickerController()
         {
+#if __IOS__
+            this.BackgroundColor = (UIDevice.CurrentDevice.CheckSystemVersion(13, 0))
+                ? UIColor.TertiarySystemBackgroundColor
+                : UIColor.White;
+#else
+            this.BackgroundColor = UIColor.White;
+#endif
             //this.ModalPresentationStyle = UIModalPresentationStyle.Custom;
             this.ModalPresentationStyle = UIModalPresentationStyle.OverCurrentContext;
-            this.TransitioningDelegate = this;        
+            this.TransitioningDelegate = this;
+            this.TransitioningDelegate = this;
 
-            SetupSafeAreaInsets();
+            this.SetupSafeAreaInsets();
         }
 
 
@@ -43,7 +53,7 @@ namespace AI
 		{
 			base.ViewDidLoad();
             this.View.BackgroundColor = UIColor.Clear;
-
+#if __IOS__
 			var datePicker = new UIDatePicker
 			{
                 TranslatesAutoresizingMaskIntoConstraints = false,
@@ -60,8 +70,11 @@ namespace AI
 
 		    if (MaximumDateTime != null)
 		        datePicker.MaximumDate = MaximumDateTime.Value.ToNSDate();
-
-		    dimmedView = new UIView(this.View.Bounds)
+#elif __TVOS__
+            var datePicker = new UIControl();
+            //TODO: Fake Date picker on tvOS
+#endif
+            dimmedView = new UIView(this.View.Bounds)
 			{
 			    AutoresizingMask = UIViewAutoresizing.FlexibleWidth | UIViewAutoresizing.FlexibleHeight,
                 TintAdjustmentMode = UIViewTintAdjustmentMode.Dimmed,
@@ -85,7 +98,7 @@ namespace AI
 			var containerView = new UIView
 			{
                 ClipsToBounds = true,
-                BackgroundColor = UIColor.White,
+                BackgroundColor = BackgroundColor,
 			    TranslatesAutoresizingMaskIntoConstraints = false
 			};
 			containerView.Layer.CornerRadius = 5.0f;
@@ -96,7 +109,7 @@ namespace AI
 			var buttonContainerView = new UIView
 			{
 			    TranslatesAutoresizingMaskIntoConstraints = false,
-                BackgroundColor = UIColor.White
+                BackgroundColor = BackgroundColor
 			};
 			buttonContainerView.Layer.CornerRadius = 5.0f;
 			this.View.AddSubview(buttonContainerView);
@@ -127,24 +140,26 @@ namespace AI
 			button.SetTitle(this.OkText, UIControlState.Normal);
 			button.TouchUpInside += async (s, e) =>
 			{
-			    this.SelectedDateTime = datePicker.Date.ToDateTime();
+#if __IOS__
+                this.SelectedDateTime = datePicker.Date.ToDateTime();
+#endif
                 await this.DismissViewControllerAsync (true);
 				Ok?.Invoke(this);
 			};
 			buttonContainerView.AddSubview(button);
 
 			var views = NSDictionary.FromObjectsAndKeys(
-				new NSObject[] 
-                { 
-                    dismissButton, 
-                    containerView, 
-                    datePicker, 
-                    buttonContainerView, 
-                    buttonDividerView, 
-                    cancelButton, 
-                    button 
+				new NSObject[]
+                {
+                    dismissButton,
+                    containerView,
+                    datePicker,
+                    buttonContainerView,
+                    buttonDividerView,
+                    cancelButton,
+                    button
                 },
-				new NSObject[] 
+				new NSObject[]
                 {
 					new NSString("DismissButton"),
                     new NSString("DatePickerContainerView"),

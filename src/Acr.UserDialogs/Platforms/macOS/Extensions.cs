@@ -1,47 +1,11 @@
-﻿using System;
-#if __IOS__
-using BigTed;
-#endif
+using System;
+using AppKit;
 using Foundation;
-using UIKit;
-using Acr.UserDialogs.Infrastructure;
-
 
 namespace Acr.UserDialogs
 {
     public static class Extensions
     {
-        public static UIColor ToNative(this System.Drawing.Color This)
-            => new UIColor((float)This.R / 255.0f, (float)This.G / 255.0f, This.B / 255.0f, This.A / 255.0f);
-
-
-        public static void SafeInvokeOnMainThread(this UIApplication app, Action action) => app.InvokeOnMainThread(() =>
-        {
-            try
-            {
-                action();
-            }
-            catch (Exception ex)
-            {
-                Log.Error("", ex.ToString());
-            }
-        });
-
-#if __IOS__
-        public static ProgressHUD.MaskType ToNative(this MaskType maskType)
-        {
-            switch (maskType)
-            {
-                case MaskType.Black: return ProgressHUD.MaskType.Black;
-                case MaskType.Clear: return ProgressHUD.MaskType.Clear;
-                case MaskType.Gradient: return ProgressHUD.MaskType.Gradient;
-                case MaskType.None: return ProgressHUD.MaskType.None;
-                default:
-                    throw new ArgumentException("Invalid mask type");
-            }
-        }
-#endif
-
 		public static DateTime ToDateTime(this NSDate nsDate)
 		{
 			if (nsDate == null)
@@ -79,5 +43,11 @@ namespace Acr.UserDialogs
 			};
 			return NSCalendar.CurrentCalendar.DateFromComponents(components);
 		}
+
+        public static void ActivateConstraints(params NSLayoutConstraint[] constraints)
+        {
+            foreach (var item in constraints)
+                item.Active = true;
+        }
     }
 }

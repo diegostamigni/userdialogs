@@ -51,7 +51,9 @@ namespace Acr.UserDialogs
 #if __IOS__
             var picker = new AI.AIDatePickerController
             {
+#if __IOS__
                 Mode = UIDatePickerMode.Date,
+#endif
                 SelectedDateTime = config.SelectedDate ?? DateTime.Now,
                 OkText = config.OkText,
                 CancelText = config.CancelText,
@@ -76,8 +78,10 @@ namespace Acr.UserDialogs
 #if __IOS__
             var picker = new AI.AIDatePickerController
             {
+#if __IOS__
                 Mode = UIDatePickerMode.Time,
-				SelectedDateTime = config.SelectedTime != null ? DateTime.Today.Add ((TimeSpan)config.SelectedTime) : DateTime.Now,
+#endif
+                SelectedDateTime = config.SelectedTime != null ? DateTime.Today.Add ((TimeSpan)config.SelectedTime) : DateTime.Now,
                 MinuteInterval = config.MinuteInterval,
                 OkText = config.OkText,
                 CancelText = config.CancelText,

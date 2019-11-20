@@ -1,8 +1,10 @@
-﻿<Project Sdk="MSBuild.Sdk.Extras/2.0.41">
+﻿<Project Sdk="MSBuild.Sdk.Extras/2.0.46">
 
     <PropertyGroup>
         <TargetFrameworks>netstandard2.0;netstandard2.1;monoandroid81;monoandroid90;xamarin.ios10;xamarin.tvos10</TargetFrameworks>
       <TargetFrameworks Condition=" '$(OS)' == 'Windows_NT' ">$(TargetFrameworks);uap10.0.16299;</TargetFrameworks>
+        <TargetFrameworks>netstandard2.0;xamarin.ios10;monoandroid81;monoandroid90;xamarin.mac20;xamarin.tvos10</TargetFrameworks>
+        <TargetFrameworks Condition=" '$(OS)' == 'Windows_NT' ">uap10.0.16299;$(TargetFrameworks)</TargetFrameworks>
         <PackageProjectUrl>https://github.com/aritchie/userdialogs</PackageProjectUrl>
         <Product>$(AssemblyName) ($(TargetFramework))</Product>
         <Authors>Allan Ritchie</Authors>
@@ -57,25 +59,22 @@
         <Reference Include="System.Drawing.Common" />
         <PackageReference Include="AndHUD" Version="1.4.2" />
         <PackageReference Include="Xamarin.Android.Support.Design" Version="28.0.0.3" />
-        <PackageReference Include="Xamarin.Build.Download" Version="0.4.11" PrivateAssets="All" />
     </ItemGroup>
 
     <ItemGroup Condition=" $(TargetFramework.StartsWith('xamarin.ios')) ">
         <Compile Include="Platforms\Shared\**\*.cs" />
         <Compile Include="Platforms\ios\**\*.cs" />
-        <Reference Include="OpenTK-1.0" />
-        <Reference Include="System.Drawing.Common" />
-        <ProjectReference Include="..\3rdparty\BTProgressHUD\BTProgressHUD\BTProgressHUD.csproj" />
+        <Compile Include="Platforms\Apple\**\*.cs" />
+        <PackageReference Include="BTProgressHUD" Version="1.2.0.6" />
     </ItemGroup>
 
     <ItemGroup Condition=" $(TargetFramework.StartsWith('xamarin.tvos')) ">
-        <Compile Include="Platforms\Shared\**\*.cs" />
-        <Compile Include="Platforms\ios\**\*.cs" Exclude="Platforms\ios\**\AIDatePickerController.cs" />
-        <Reference Include="OpenTK-1.0" />
-        <Reference Include="System.Drawing.Common" />
-        <ProjectReference Include="..\3rdparty\BTProgressHUD\BTProgressHUD\BTProgressHUD.csproj" />
+      <Compile Include="Platforms\Shared\**\*.cs" />
+      <Compile Include="Platforms\ios\**\*.cs" />
+      <Compile Include="Platforms\Apple\**\*.cs" />
+      <Compile Include="Platforms\tvOS\**\*.cs" />
     </ItemGroup>
-
+  
     <ItemGroup Condition=" $(TargetFramework.StartsWith('uap')) ">
         <PackageReference Include="Coding4Fun.Toolkit.Controls" Version="2.1.8" />
         <Compile Include="Platforms\Shared\**\*.cs" />
@@ -92,9 +91,9 @@
         <PackageReference Include="Xamarin.Forms" Version="4.2.0.709249" />
     </ItemGroup>
 
-    <ItemGroup>
-      <EmbeddedResource Remove="3rdparty\**" />
-      <None Remove="3rdparty\**" />
+    <ItemGroup Condition=" $(TargetFramework.StartsWith('xamarin.mac')) ">
+        <Compile Include="Platforms\Shared\**\*.cs" />
+        <Compile Include="Platforms\macOS\**\*.cs" />
+        <Reference Include="System.Drawing.Common" />
     </ItemGroup>
-
 </Project>
